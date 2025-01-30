@@ -29,6 +29,6 @@ export type MinFrontendErrorLogT = {
   pageUrl: string; // URL of the page
   errorMessage: string; // Description of the error
   stackTrace?: string; // Stack trace, if available
-  apiUrl: string;
+  apiUrl?: string;
   error?: unknown;
 };
