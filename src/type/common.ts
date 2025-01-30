@@ -1,4 +1,4 @@
-export type FrontendErrorLog = {
+export type ErrorLogT = {
   timestamp: string; // ISO 8601 format
   environment: "production" | "staging" | "development";
   applicationName: string; // Name of the frontend application
@@ -20,4 +20,15 @@ export type FrontendErrorLog = {
   };
   correlationId?: string; // ID to trace related logs or operations
   tags?: string[]; // Custom tags for categorization
+};
+
+export type MinFrontendErrorLogT = {
+  timestamp: string; // ISO 8601 format
+  environment: "production" | "staging" | "development" | "test";
+  severity: "INFO" | "WARNING" | "ERROR" | "CRITICAL"; // Severity level of the error
+  pageUrl: string; // URL of the page
+  errorMessage: string; // Description of the error
+  stackTrace?: string; // Stack trace, if available
+  apiUrl: string;
+  error?: unknown;
 };
