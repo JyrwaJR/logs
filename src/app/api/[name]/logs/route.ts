@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "../../../../../prisma/client";
+import { MinErrorLogSchema } from "@/validiation/minErrorLogSchema";
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ name: string }> },
@@ -15,7 +16,16 @@ export async function POST(
   { params }: { params: Promise<{ name: string }> },
 ) {
   try {
-    const body = await req.json();
+    const reqBody = await req.json();
+    const isValidData = await MinErrorLogSchema.safeParseAsync(reqBody);
+    if (!isValidData.success) {
+      return NextResponse.json({
+        success: false,
+        message: "Invalid request body",
+        error: isValidData.error.issues,
+      });
+    }
+    const body = isValidData.data;
     const name = (await params).name;
     const isProjectPresent = await client.project.findFirst({
       where: {
