@@ -11,5 +11,5 @@ const MinErrorLogSchema = z.object({
   stackTrace: z.string().optional(), // Optional stack trace
   projectId: z.string().optional(), // ObjectId as string
 });
-
-export { MinErrorLogSchema };
+type MinErrorLog = z.infer<typeof MinErrorLogSchema>;
+export { MinErrorLogSchema, type MinErrorLog };
