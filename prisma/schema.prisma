@@ -44,7 +44,7 @@ model MinErrorLog {
   id           String  @id @default(auto()) @map("_id") @db.ObjectId
   timestamp    String // ISO 8601 format
   environment  String // "production" | "staging" | "development" | "test"
-  severity        String
+  severity     String
   pageUrl      String // URL of the page
   errorMessage String // Description of the error
   stackTrace   String? // Stack trace, if available
