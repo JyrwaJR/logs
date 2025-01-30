@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  minErrorLogs MinErrorLog[]
+  errorLog     ErrorLog[]
+}
+
+model ErrorLog {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  timestamp       String
+  environment     String
+  applicationName String
+  pageUrl         String
+  errorType       String
+  errorMessage    String
+  stackTrace      String
+  severity        String
+  userId          String
+  userAgent       String
+  sessionId       String
+  browserName     String
+  browserVersion  String
+  operatingSystem String
+  viewport        String
+  correlationId   String
+  tags            String // Store JSON array as a string (or use Json type if supported)
+  project         Project @relation(fields: [projectId], references: [id])
+  projectId       String  @db.ObjectId
+}
+
+model MinErrorLog {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  timestamp    String // ISO 8601 format
+  environment  String // "production" | "staging" | "development" | "test"
+  pageUrl      String // URL of the page
+  errorMessage String // Description of the error
+  stackTrace   String? // Stack trace, if available
+  project      Project @relation(fields: [projectId], references: [id])
+  projectId    String  @db.ObjectId
+}
