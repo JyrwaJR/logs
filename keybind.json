@@ -1,0 +1,64 @@
+[
+  {
+    "key": "jk",
+    "command": "vscode-neovim.escape",
+    "when": "editorTextFocus && neovim.mode == 'insert'"
+  },
+  {
+    "key": "ctrl+shift+h",
+    "command": "editor.action.removeHighlight"
+  },
+  {
+    "key": "dd",
+    "command": "editor.action.deleteLines",
+    "when": "editorTextFocus && neovim.mode == 'normal'"
+  },
+  {
+    "key": "ctrl+shift+=",
+    "command": "editor.action.incrementNumber"
+  },
+  {
+    "key": "ctrl+shift+-",
+    "command": "editor.action.decrementNumber"
+  },
+  {
+    "key": "ctrl+\\",
+    "command": "workbench.action.splitEditor"
+  },
+  {
+    "key": "ctrl+shift+\\",
+    "command": "workbench.action.splitEditorOrthogonal"
+  },
+  {
+    "key": "ctrl+alt+e",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "ctrl+alt+t",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+shift+o",
+    "command": "workbench.action.gotoSymbol"
+  },
+  {
+    "key": "ctrl+alt+s",
+    "command": "workbench.action.files.save"
+  },
+  {
+    "key": "ctrl+alt+f",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "ctrl+alt+g",
+    "command": "workbench.view.scm"
+  },
+  {
+    "key": "ctrl+alt+n",
+    "command": "workbench.action.newUntitledFile"
+  },
+  {
+    "key": "ctrl+alt+c",
+    "command": "workbench.action.closeActiveEditor"
+  }
+]

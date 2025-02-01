@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "../../../../../prisma/client";
 import { MinErrorLogSchema } from "@/validiation/minErrorLogSchema";
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ name: string }> },
-) {
+type Params = {
+  name: Promise<{ name: string }>;
+};
+export async function GET(req: NextRequest, { params }: Params) {
   const name = (await params).name;
   const data = await client.minErrorLog.findMany({
     where: { project: { name: name } },
+    omit: { projectId: true, id: true },
+    orderBy: { timestamp: "desc" },
   });
   return NextResponse.json({ data });
 }
@@ -27,6 +29,7 @@ export async function POST(
     }
     const body = isValidData.data;
     const name = (await params).name;
+
     const isProjectPresent = await client.project.findFirst({
       where: {
         name: name,
@@ -36,6 +39,9 @@ export async function POST(
       const project = await client.project.create({
         data: {
           name: name,
+          minErrorLogs: {
+            create: body,
+          },
         },
       });
       if (project) {
