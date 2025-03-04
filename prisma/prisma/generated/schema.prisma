@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./prisma/generated" // Specify the folder where the Prisma client will be generated
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Log {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String // Acts as the dynamic collection identifier
+  level     String // Log level (info, error, warn, etc.)
+  message   String
+  stack     String? // Optional stack trace for errors
+  metadata  Json? // Additional data like user info, component stack, etc.
+  createdAt DateTime @default(now()) @map("timestamp")
+
+  @@index([name]) // Index for better query performance
+}

@@ -2,20 +2,28 @@ import { env } from "@/env";
 import winston from "winston";
 import "winston-mongodb";
 
-// MongoDB connection URI
-const mongoUri = env.DATABASE_URL;
+const logger = winston.createLogger({
+  level: "info",
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.colorize(),
+        winston.format.simple(),
+      ),
+    }),
+    new winston.transports.MongoDB({
+      db: env.DATABASE_URL as string,
+      options: { useNewUrlParser: true, useUnifiedTopology: true },
+      collection: "logs", // Default collection name
+      tryReconnect: true,
+      metaKey: "metadata", // Store extra metadata
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json(),
+      ),
+    }),
+  ],
+});
 
-// Function to create a logger dynamically per collection
-export const createLogger = (collectionName: string) => {
-  return winston.createLogger({
-    level: "info",
-    format: winston.format.json(),
-    transports: [
-      new winston.transports.MongoDB({
-        db: mongoUri,
-        collection: collectionName, // Dynamic collection name
-        level: "info",
-      }),
-    ],
-  });
-};
+export default logger;

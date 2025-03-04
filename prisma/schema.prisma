@@ -1,8 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
+  output   = "./prisma/generated" // Specify the folder where the Prisma client will be generated
 }
 
 datasource db {
@@ -10,44 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Project {
-  id           String        @id @default(auto()) @map("_id") @db.ObjectId
-  name         String        @unique
-  minErrorLogs MinErrorLog[]
-  errorLog     ErrorLog[]
-}
+model Log {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name String   // Acts as the dynamic collection identifier
+  level          String   // Log level (info, error, warn, etc.)
+  message        String
+  stack          String?  // Optional stack trace for errors
+  metadata       Json?    // Additional data like user info, component stack, etc.
+  createdAt      DateTime @default(now()) @map("timestamp")
 
-model ErrorLog {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId
-  timestamp       String
-  environment     String
-  applicationName String
-  pageUrl         String
-  errorType       String
-  errorMessage    String
-  stackTrace      String
-  severity        String
-  userId          String
-  userAgent       String
-  sessionId       String
-  browserName     String
-  browserVersion  String
-  operatingSystem String
-  viewport        String
-  correlationId   String
-  tags            String // Store JSON array as a string (or use Json type if supported)
-  project         Project @relation(fields: [projectId], references: [id])
-  projectId       String  @db.ObjectId
-}
-
-model MinErrorLog {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  timestamp    String // ISO 8601 format
-  environment  String // "production" | "staging" | "development" | "test"
-  severity     String
-  pageUrl      String // URL of the page
-  errorMessage String // Description of the error
-  stackTrace   String? // Stack trace, if available
-  project      Project @relation(fields: [projectId], references: [id])
-  projectId    String  @db.ObjectId
+  @@index([name]) // Index for better query performance
 }

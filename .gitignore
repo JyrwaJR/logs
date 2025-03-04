@@ -19,7 +19,7 @@
 
 # production
 /build
-
+rest.http
 # misc
 .DS_Store
 *.pem

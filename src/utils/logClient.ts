@@ -7,6 +7,7 @@ interface ErrorLogContext {
   user?: string;
   page?: string;
   componentStack?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   additionalInfo?: Record<string, any>;
 }
 

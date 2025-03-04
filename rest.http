@@ -9,3 +9,10 @@ content-type: application/json
   "level": "error",
   "meta": { "user": "john_doe", "action": "click", "button": "login" }
 }
+
+###
+# @name scratchpad
+GET http://localhost:3000/api/v2/scratchpad HTTP/1.1
+accept: application/json
+content-type: application/json
+
