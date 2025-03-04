@@ -5,9 +5,14 @@ accept: application/json
 content-type: application/json
 
 {
-  "message": "User clicked the login button",
-  "level": "error",
-  "meta": { "user": "john_doe", "action": "click", "button": "login" }
+  "name": "system_errors",  
+  "level": "error",  
+  "message": "Database connection failed",  
+  "meta": {  
+    "errorCode": "DB_CONN_ERR",  
+    "stack": "Error: Connection timeout at db.connect (db.js:42:15)",  
+    "timestamp": "2025-03-04T18:32:00.456Z"  
+  }  
 }
 
 ###

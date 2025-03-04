@@ -112,7 +112,7 @@ Prisma.NullTypes = {
 
 exports.Prisma.LogScalarFieldEnum = {
   id: 'id',
-  name: 'name',
+  project: 'project',
   level: 'level',
   message: 'message',
   stack: 'stack',

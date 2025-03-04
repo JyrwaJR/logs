@@ -1,26 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
-import { client } from "../../../../../prisma/client";
-import loggers from "../../../../utils/loggers";
+import { prisma } from "../../../../../prisma/client";
+
+// ✅ GET: Fetch logs by collection name
 export async function GET(
   request: NextRequest,
   { params }: { params: { name: string } },
 ) {
   try {
-    const { name } = params;
+    const { name } = await params;
     if (!name) {
-      return NextResponse.json(
-        { error: "Missing collection name" },
-        { status: 400 },
-      );
+      const logs = await prisma.log.findMany();
+      return NextResponse.json({ logs: logs }, { status: 400 });
     }
 
-    // Fetch logs by collection name
-    const logs = await client.log.findMany({
-      where: { name: name },
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
+
+    const skip = (page - 1) * pageSize;
+
+    // Fetch paginated logs
+    const logs = await prisma.log.findMany({
+      where: { project: name },
       orderBy: { createdAt: "desc" },
+      skip,
+      take: pageSize,
     });
 
-    return NextResponse.json({ logs }, { status: 200 });
+    // Get total log count for pagination metadata
+    const totalLogs = await prisma.log.count({
+      where: { project: name },
+    });
+
+    return NextResponse.json({
+      logs,
+      pagination: {
+        totalLogs,
+        totalPages: Math.ceil(totalLogs / pageSize),
+        currentPage: page,
+        pageSize,
+      },
+    });
   } catch (error) {
     console.error("Fetch Logs Error:", error);
     return NextResponse.json(
@@ -30,9 +50,14 @@ export async function GET(
   }
 }
 
-export async function POST(request: NextRequest) {
+// ✅ POST: Save logs using Winston
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { name: string } },
+) {
   try {
-    const { name, level = "info", message, meta } = await request.json();
+    const { name } = await params;
+    const { level = "info", message, meta } = await request.json();
 
     if (!name || !message) {
       return NextResponse.json(
@@ -41,11 +66,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log using Winston
-    loggers.log({
-      level,
-      message,
-      metadata: { collectionName: name, ...meta },
+    // ✅ Save log in MongoDB via Prisma for querying
+    await prisma.log.create({
+      data: {
+        project: name,
+        level,
+        message,
+        stack: meta?.stack || null,
+        metadata: meta,
+        createdAt: new Date(),
+      },
     });
 
     return NextResponse.json(

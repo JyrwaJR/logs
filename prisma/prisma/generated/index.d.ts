@@ -832,7 +832,7 @@ export namespace Prisma {
 
   export type LogMinAggregateOutputType = {
     id: string | null
-    name: string | null
+    project: string | null
     level: string | null
     message: string | null
     stack: string | null
@@ -841,7 +841,7 @@ export namespace Prisma {
 
   export type LogMaxAggregateOutputType = {
     id: string | null
-    name: string | null
+    project: string | null
     level: string | null
     message: string | null
     stack: string | null
@@ -850,7 +850,7 @@ export namespace Prisma {
 
   export type LogCountAggregateOutputType = {
     id: number
-    name: number
+    project: number
     level: number
     message: number
     stack: number
@@ -862,7 +862,7 @@ export namespace Prisma {
 
   export type LogMinAggregateInputType = {
     id?: true
-    name?: true
+    project?: true
     level?: true
     message?: true
     stack?: true
@@ -871,7 +871,7 @@ export namespace Prisma {
 
   export type LogMaxAggregateInputType = {
     id?: true
-    name?: true
+    project?: true
     level?: true
     message?: true
     stack?: true
@@ -880,7 +880,7 @@ export namespace Prisma {
 
   export type LogCountAggregateInputType = {
     id?: true
-    name?: true
+    project?: true
     level?: true
     message?: true
     stack?: true
@@ -963,7 +963,7 @@ export namespace Prisma {
 
   export type LogGroupByOutputType = {
     id: string
-    name: string
+    project: string
     level: string
     message: string
     stack: string | null
@@ -990,7 +990,7 @@ export namespace Prisma {
 
   export type LogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    name?: boolean
+    project?: boolean
     level?: boolean
     message?: boolean
     stack?: boolean
@@ -1002,7 +1002,7 @@ export namespace Prisma {
 
   export type LogSelectScalar = {
     id?: boolean
-    name?: boolean
+    project?: boolean
     level?: boolean
     message?: boolean
     stack?: boolean
@@ -1010,14 +1010,14 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type LogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "level" | "message" | "stack" | "metadata" | "createdAt", ExtArgs["result"]["log"]>
+  export type LogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "project" | "level" | "message" | "stack" | "metadata" | "createdAt", ExtArgs["result"]["log"]>
 
   export type $LogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Log"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      name: string
+      project: string
       level: string
       message: string
       stack: string | null
@@ -1416,7 +1416,7 @@ export namespace Prisma {
    */ 
   interface LogFieldRefs {
     readonly id: FieldRef<"Log", 'String'>
-    readonly name: FieldRef<"Log", 'String'>
+    readonly project: FieldRef<"Log", 'String'>
     readonly level: FieldRef<"Log", 'String'>
     readonly message: FieldRef<"Log", 'String'>
     readonly stack: FieldRef<"Log", 'String'>
@@ -1776,7 +1776,7 @@ export namespace Prisma {
 
   export const LogScalarFieldEnum: {
     id: 'id',
-    name: 'name',
+    project: 'project',
     level: 'level',
     message: 'message',
     stack: 'stack',
@@ -1865,7 +1865,7 @@ export namespace Prisma {
     OR?: LogWhereInput[]
     NOT?: LogWhereInput | LogWhereInput[]
     id?: StringFilter<"Log"> | string
-    name?: StringFilter<"Log"> | string
+    project?: StringFilter<"Log"> | string
     level?: StringFilter<"Log"> | string
     message?: StringFilter<"Log"> | string
     stack?: StringNullableFilter<"Log"> | string | null
@@ -1875,7 +1875,7 @@ export namespace Prisma {
 
   export type LogOrderByWithRelationInput = {
     id?: SortOrder
-    name?: SortOrder
+    project?: SortOrder
     level?: SortOrder
     message?: SortOrder
     stack?: SortOrder
@@ -1888,7 +1888,7 @@ export namespace Prisma {
     AND?: LogWhereInput | LogWhereInput[]
     OR?: LogWhereInput[]
     NOT?: LogWhereInput | LogWhereInput[]
-    name?: StringFilter<"Log"> | string
+    project?: StringFilter<"Log"> | string
     level?: StringFilter<"Log"> | string
     message?: StringFilter<"Log"> | string
     stack?: StringNullableFilter<"Log"> | string | null
@@ -1898,7 +1898,7 @@ export namespace Prisma {
 
   export type LogOrderByWithAggregationInput = {
     id?: SortOrder
-    name?: SortOrder
+    project?: SortOrder
     level?: SortOrder
     message?: SortOrder
     stack?: SortOrder
@@ -1914,7 +1914,7 @@ export namespace Prisma {
     OR?: LogScalarWhereWithAggregatesInput[]
     NOT?: LogScalarWhereWithAggregatesInput | LogScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Log"> | string
-    name?: StringWithAggregatesFilter<"Log"> | string
+    project?: StringWithAggregatesFilter<"Log"> | string
     level?: StringWithAggregatesFilter<"Log"> | string
     message?: StringWithAggregatesFilter<"Log"> | string
     stack?: StringNullableWithAggregatesFilter<"Log"> | string | null
@@ -1924,7 +1924,7 @@ export namespace Prisma {
 
   export type LogCreateInput = {
     id?: string
-    name: string
+    project: string
     level: string
     message: string
     stack?: string | null
@@ -1934,7 +1934,7 @@ export namespace Prisma {
 
   export type LogUncheckedCreateInput = {
     id?: string
-    name: string
+    project: string
     level: string
     message: string
     stack?: string | null
@@ -1943,7 +1943,7 @@ export namespace Prisma {
   }
 
   export type LogUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    project?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     stack?: NullableStringFieldUpdateOperationsInput | string | null
@@ -1952,7 +1952,7 @@ export namespace Prisma {
   }
 
   export type LogUncheckedUpdateInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    project?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     stack?: NullableStringFieldUpdateOperationsInput | string | null
@@ -1962,7 +1962,7 @@ export namespace Prisma {
 
   export type LogCreateManyInput = {
     id?: string
-    name: string
+    project: string
     level: string
     message: string
     stack?: string | null
@@ -1971,7 +1971,7 @@ export namespace Prisma {
   }
 
   export type LogUpdateManyMutationInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    project?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     stack?: NullableStringFieldUpdateOperationsInput | string | null
@@ -1980,7 +1980,7 @@ export namespace Prisma {
   }
 
   export type LogUncheckedUpdateManyInput = {
-    name?: StringFieldUpdateOperationsInput | string
+    project?: StringFieldUpdateOperationsInput | string
     level?: StringFieldUpdateOperationsInput | string
     message?: StringFieldUpdateOperationsInput | string
     stack?: NullableStringFieldUpdateOperationsInput | string | null
@@ -2044,7 +2044,7 @@ export namespace Prisma {
 
   export type LogCountOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    project?: SortOrder
     level?: SortOrder
     message?: SortOrder
     stack?: SortOrder
@@ -2054,7 +2054,7 @@ export namespace Prisma {
 
   export type LogMaxOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    project?: SortOrder
     level?: SortOrder
     message?: SortOrder
     stack?: SortOrder
@@ -2063,7 +2063,7 @@ export namespace Prisma {
 
   export type LogMinOrderByAggregateInput = {
     id?: SortOrder
-    name?: SortOrder
+    project?: SortOrder
     level?: SortOrder
     message?: SortOrder
     stack?: SortOrder

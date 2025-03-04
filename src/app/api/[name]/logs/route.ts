@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { client } from "../../../../../prisma/client";
+import { prisma } from "../../../../../prisma/client";
 import { MinErrorLogSchema } from "@/validiation/minErrorLogSchema";
 type Params = {
   name: Promise<{ name: string }>;
 };
 export async function GET(req: NextRequest, { params }: Params) {
   const name = (await params).name;
-  const data = await client.minErrorLog.findMany({
+  const data = await prisma.minErrorLog.findMany({
     where: { project: { name: name } },
     omit: { projectId: true, id: true },
     orderBy: { timestamp: "desc" },
@@ -30,13 +30,13 @@ export async function POST(
     const body = isValidData.data;
     const name = (await params).name;
 
-    const isProjectPresent = await client.project.findFirst({
+    const isProjectPresent = await prisma.project.findFirst({
       where: {
         name: name,
       },
     });
     if (!isProjectPresent) {
-      const project = await client.project.create({
+      const project = await prisma.project.create({
         data: {
           name: name,
           minErrorLogs: {
@@ -45,7 +45,7 @@ export async function POST(
         },
       });
       if (project) {
-        const log = await client.minErrorLog.create({
+        const log = await prisma.minErrorLog.create({
           data: {
             ...body,
             projectId: project.id,
@@ -60,7 +60,7 @@ export async function POST(
         data: project,
       });
     }
-    const log = await client.minErrorLog.create({
+    const log = await prisma.minErrorLog.create({
       data: {
         ...body,
         projectId: isProjectPresent.id,
