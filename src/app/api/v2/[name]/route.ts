@@ -9,15 +9,40 @@ export async function GET(
   try {
     const { name } = await params;
     if (!name) {
-      const logs = await prisma.log.findMany();
-      return NextResponse.json({ logs: logs }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing 'name' parameter" },
+        { status: 400 },
+      );
     }
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1", 10);
     const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
 
+    const totalLogs = await prisma.log.count({
+      where: { project: name },
+    });
     const skip = (page - 1) * pageSize;
+    if (name === "all") {
+      const logs = await prisma.log.findMany({
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: pageSize,
+      });
+      return NextResponse.json(
+        {
+          logs: logs,
+
+          pagination: {
+            totalLogs,
+            totalPages: Math.ceil(totalLogs / pageSize),
+            currentPage: page,
+            pageSize,
+          },
+        },
+        { status: 400 },
+      );
+    }
 
     // Fetch paginated logs
     const logs = await prisma.log.findMany({
@@ -28,9 +53,6 @@ export async function GET(
     });
 
     // Get total log count for pagination metadata
-    const totalLogs = await prisma.log.count({
-      where: { project: name },
-    });
 
     return NextResponse.json({
       logs,
