@@ -8,14 +8,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Log {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  project String   // Acts as the dynamic collection identifier
-  level          String   // Log level (info, error, warn, etc.)
-  message        String
-  stack          String?  // Optional stack trace for errors
-  metadata       Json?    // Additional data like user info, component stack, etc.
-  createdAt      DateTime @default(now()) @map("timestamp")
+model Project {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String @unique // Name of the project
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("timestamp")
+  logs      Log[]
+}
 
-  @@index([project]) // Index for better query performance
+model Log {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  level     String // Log level (info, error, warn, etc.)
+  message   String
+  stack     String? // Optional stack trace for errors
+  metadata  Json? // Additional data like user info, component stack, etc.
+  createdAt DateTime @default(now()) @map("timestamp")
+  projectId String   @db.ObjectId
+  project   Project  @relation(fields: [projectId], references: [id])
+
+  @@index([projectId, createdAt])
 }
