@@ -3,10 +3,12 @@ import { prisma } from "@prisma/client";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { name: string } },
+  { params }: { params: Promise<{ name: string }> },
 ) {
   try {
+    console.log("Start");
     const { name } = await params;
+    console.log(`1`);
     if (!name) {
       return NextResponse.json(
         { error: "Missing 'name' parameter" },
@@ -14,6 +16,7 @@ export async function GET(
       );
     }
 
+    console.log(`2`);
     // Extract pagination parameters from query
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1", 10);
@@ -40,6 +43,7 @@ export async function GET(
       },
     });
 
+    console.log(`3`);
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
@@ -49,9 +53,10 @@ export async function GET(
       where: { projectId: project.id },
     });
 
+    console.log(`1`);
     return NextResponse.json(
       {
-        data: project.logs,
+        data: project,
         message: "Successfully fetched logs",
         pagination: {
           currentPage: page,
@@ -65,7 +70,7 @@ export async function GET(
   } catch (error) {
     console.error("Fetch Logs Error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { message: "Internal Server Error", error },
       { status: 500 },
     );
   }
@@ -73,7 +78,7 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { name: string } },
+  { params }: { params: Promise<{ name: string }> },
 ) {
   try {
     const { name } = await params;

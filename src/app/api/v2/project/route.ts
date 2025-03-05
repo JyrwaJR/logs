@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@prisma/client";
 
-export const GET = async (req: Request) => {
+export const GET = async (request: NextRequest) => {
   try {
     const projects = await prisma.project.findMany({
       select: {
@@ -11,6 +11,7 @@ export const GET = async (req: Request) => {
         createdAt: true,
       },
     });
+
     return NextResponse.json(
       {
         data: projects,

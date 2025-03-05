@@ -3,7 +3,7 @@ import { prisma } from "@prisma/client";
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: { name: string } },
+  { params }: { params: Promise<{ name: string }> },
 ) => {
   try {
     const { name } = await params;
